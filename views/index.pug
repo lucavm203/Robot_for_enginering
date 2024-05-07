@@ -1,0 +1,33 @@
+extends layout
+block layout-content
+   
+    div(id="test")
+    div(class="View container")
+        h1 hoi
+        form(action="/post", method="post") 
+            .row 
+                div(class="col s4 right-align")
+                div(class="col s4 center-align"): label Voer tijd in
+                div(class="col s4 left-align")
+            .row 
+                div(class="col s4 right-align")
+                div(class="col s4 center-align"): input(type="number", name="tijd") 
+                div(class="col s4 left-align")
+            .row 
+                div(class="col s4 right-align"): button(class="waves-effect waves-light btn disabled"  type="submit", name="start" value="start" id="start") start
+                div(class="col s4 center-align")
+                div(class="col s4 left-align"): button(class="waves-effect waves-light btn" type="submit", name="stop" value="stop" id="stop" ) stop
+            .row 
+                div(class="col s4 right-align") 
+                div(class="col s4 center-align"): button(class="waves-effect waves-light btn" type="submit", name="voor" value="up") up
+                div(class="col s4 left-align")
+                
+            .row 
+                div(class="col s4 right-align"): button(class="waves-effect waves-light btn" type="submit", name="left" value="left") left
+                div(class="col s4 center-align")
+                div(class="col s4 left-align"): button(class="waves-effect waves-light btn" type="submit", name="right" value="right") right
+
+            .row 
+                div(class="col s4 right-align")
+                div(class="col s4 center-align"): button(class="waves-effect waves-light btn" type="submit", name="achter" value="down") down
+                div(class="col s4 left-align")
