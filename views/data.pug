@@ -1,0 +1,36 @@
+extends layout
+block layout-content
+
+    div(id="test")
+    #spacer
+    div(class="container View")
+        .row
+            div(class="col m5")
+                div(class="card color1")
+                    div(class="card-content white-text")
+                        span.card-title Locatie
+                        p#datavanlocate hooie
+
+                div(class="card color1")
+                    div(class="card-content white-text")
+                        span.card-title Hellingshoek
+                        p#datavanxyz hooie
+            div(class="col m2")
+            div(class="col m5")
+                .stage 
+                    div(class="cube" id="cube") 
+                        figure.back achterkant
+                        figure.top bovenkant
+                        figure.bottom onderkant
+                        figure.left linkerkant
+                        figure.righter rechterkant
+                        figure.front voorkant
+        
+
+
+
+
+
+
+
+    script(rel="javascript"  src="websocket.js") 

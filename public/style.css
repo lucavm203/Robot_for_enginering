@@ -17,6 +17,13 @@ li{
 body{
     background-color: #584683;
 }
+.color1{
+    background-color: #a2528c;
+}
+#spacer{
+    margin-top: 150px;
+    margin-bottom: 100px;
+}
 #test canvas{
     display: block;
     vertical-align: bottom;
@@ -42,3 +49,22 @@ button{
     justify-self: center;
     background-color: #ff8d6e;
 }
+.stage {
+    width: 300px; height: 300px;
+    -webkit-perspective: 1600px;
+    -webkit-perspective-origin: 50% -240px;
+  }
+figure {
+    display: block; position: absolute;
+    width: 150px; height:150px;
+    background-color: #60c2ef;
+}
+
+.cube { -webkit-transform-style: preserve-3d; }
+figure { -webkit-transform-origin: 50% 50% 0; }
+.front { -webkit-transform: translateZ(75px); }
+.back { -webkit-transform: rotateY(180deg) translateZ(75px); }
+.top { -webkit-transform: rotateX(90deg) translateZ(75px); }
+.bottom { -webkit-transform: rotateX(-90deg) translateZ(75px); }
+.left { -webkit-transform: rotateY(-90deg) translateZ(75px); }
+.righter { -webkit-transform: rotateY(90deg) translateZ(75px); }
