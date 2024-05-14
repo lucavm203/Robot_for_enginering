@@ -12,8 +12,9 @@ let server = require('http').createServer();
 var WebSocketServer = require('ws');
 const { time } = require('console');
 const { Date } = require('core-js');
-const ws = new WebSocketServer('ws://145.49.113.123:1880/ws/test');
+// const ws = new WebSocketServer('ws://145.49.113.123:1880/ws/test');
 const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+"@cluster0.aczs2un.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+var startstop = 'stop';
 
 const http = axios.create({
   baseURL: 'http://145.49.113.123:1880'
@@ -31,51 +32,50 @@ app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
 const client = new MongoDB.MongoClient(uri);
-
-async function insertws(data) {
-  try {
-    const database = client.db('Test');
-    const movies = database.collection('tester');
-    // Query for a movie that has the title 'Back to the Future'
+// async function insertws(data) {
+//   try {
+//     const database = client.db('Test');
+//     const movies = database.collection('tester');
+//     // Query for a movie that has the title 'Back to the Future'
   
-    // const string = timest.toString()
-    const doc = {
-      time: data
-    }
-    const result = await movies.insertOne(doc);
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+//     // const string = timest.toString()
+//     const doc = {
+//       time: data
+//     }
+//     const result = await movies.insertOne(doc);
+//     console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-  } finally {
-    // Ensures that the client will close when you finish/error
-  }
-}
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//   }
+// }
 
-ws.on('error', console.error);
+// ws.on('error', console.error);
 
-ws.on('message', function message(data) {
-  console.log('received: %s', data);
-  console.dir(data)
-  const jsonobj = JSON.parse(data)
-  let x = jsonobj.XYZ.X
-  let y = jsonobj.XYZ.Y
-  let z = jsonobj.XYZ.Z
-  console.log(x)
-  console.log(y)
-  console.log(z)
-  // const resultStr = data.toString();
-  // console.dir(resultStr)
-  // const timestamp = new Date();
-  // const iso = timestamp.toISOString()
+// ws.on('message', function message(data) {
+//   console.log('received: %s', data);
+//   console.dir(data)
+//   const jsonobj = JSON.parse(data)
+//   let x = jsonobj.XYZ.X
+//   let y = jsonobj.XYZ.Y
+//   let z = jsonobj.XYZ.Z
+//   console.log(x)
+//   console.log(y)
+//   console.log(z)
+//   // const resultStr = data.toString();
+//   // console.dir(resultStr)
+//   // const timestamp = new Date();
+//   // const iso = timestamp.toISOString()
 
-  // insertws(iso).catch(console.dir)
-});
+//   // insertws(iso).catch(console.dir)
+// });
 
 
 
 
 
 app.get("/", (req, res) => {
-    res.render("index", { title: "controll" });
+    res.render("index", { title: "controll", startstop: startstop});
   });
 app.get("/data", (req,res) => {
   res.render("data",{title: "data"})
@@ -100,43 +100,45 @@ app.post("/post", async (req,res)=>
   console.log("niks")
   console.log(stop)
   if(stop != undefined){
-    return http.get('/test', {
-      params: {
-        richting: stop
-      }});
+    startstop = "start"
+    // return http.get('/test', {
+    //   params: {
+    //     richting: stop
+    //   }});
   }else if(start != undefined){
-    return http.get('/test', {
-      params: {
-        richting: start
-      }});
+    startstop = "stop"
+    // return http.get('/test', {
+    //   params: {
+    //     richting: start
+    //   }});
   }
   else if(voor != undefined){
-    return http.get('/test', {
-      params: {
-        richting: voor,
-        time: tijd
-      }});
+    // return http.get('/test', {
+    //   params: {
+    //     richting: voor,
+    //     time: tijd
+    //   }});
   }
   else if(achter != undefined){
-    return http.get('/test', {
-      params: {
-        richting: achter,
-        time: tijd
-      }});
+    // return http.get('/test', {
+    //   params: {
+    //     richting: achter,
+    //     time: tijd
+    //   }});
   }
   else if(links != undefined){
-    return http.get('/test', {
-      params: {
-        richting: links,
-        time: tijd
-      }});
+    // return http.get('/test', {
+    //   params: {
+    //     richting: links,
+    //     time: tijd
+    //   }});
   }
   else if(rechts != undefined){
-    return http.get('/test', {
-      params: {
-        richting: rechts,
-        time: tijd
-      }});
+    // return http.get('/test', {
+    //   params: {
+    //     richting: rechts,
+    //     time: tijd
+    //   }});
   }
 
 })

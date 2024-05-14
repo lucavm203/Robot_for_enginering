@@ -2,7 +2,7 @@ extends layout
 block layout-content
    
     div(id="test")
-    div(class="View container")
+    div(class="View container") 
         h1 hoi
         form(action="/post", method="post") 
             .row 
@@ -13,14 +13,16 @@ block layout-content
                 div(class="col s4 right-align")
                 div(class="col s4 center-align"): input(type="number", name="tijd") 
                 div(class="col s4 left-align")
+
             .row 
-                div(class="col s4 right-align"): button(class="waves-effect waves-light btn disabled"  type="submit", name="start" value="start" id="start") start
+                div(class="col s4 right-align"): button(class="waves-effect waves-light btn"  type="submit", name="start" value="start" id="start") start
                 div(class="col s4 center-align")
                 div(class="col s4 left-align"): button(class="waves-effect waves-light btn" type="submit", name="stop" value="stop" id="stop" ) stop
+
             .row 
-                div(class="col s4 right-align") 
+                div(class="col s4 right-align") #{startstop}
                 div(class="col s4 center-align"): button(class="waves-effect waves-light btn" type="submit", name="voor" value="up") up
-                div(class="col s4 left-align")
+                div(class="col s4 left-align"): p.description= startstop
                 
             .row 
                 div(class="col s4 right-align"): button(class="waves-effect waves-light btn" type="submit", name="left" value="left") left
@@ -31,4 +33,17 @@ block layout-content
                 div(class="col s4 right-align")
                 div(class="col s4 center-align"): button(class="waves-effect waves-light btn" type="submit", name="achter" value="down") down
                 div(class="col s4 left-align")
+
+    script.
+        let stops = document.querySelector("#stop");
+        let starts = document.querySelector("#start");
+        let startstop = '!{startstop}';
+        if ( startstop == "stop"){
+            starts.classList.add("disabled");
+        }
+        if (startstop == "start"){
+            stops.classList.add("disabled");
+        }
+        
+   
     script(rel="javascript" src="scripts.js")
