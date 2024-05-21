@@ -10,20 +10,22 @@ const path = require('path');
 const port = 8000;
 let server = require('http').createServer();
 var WebSocketServer = require('ws');
-const { time } = require('console');
-const { Date } = require('core-js');
 // const ws = new WebSocketServer('ws://145.49.113.123:1880/ws/test');
 const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+"@cluster0.aczs2un.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 var startstop = 'stop';
 
 const http = axios.create({
-  baseURL: 'http://145.49.113.123:1880'
+  baseURL: 'http://145.49.127.249:1880/aaadlander',
+  headers: {
+    'Content-Type' : 'application/x-www-form-urlencoded'
+  }
 });
 
 app.use(
   express.urlencoded({
     extended: true,
-  })
+  }),
+  express.json()
 )
 
 
@@ -64,7 +66,7 @@ const client = new MongoDB.MongoClient(uri);
 //   console.log(z)
 //   // const resultStr = data.toString();
 //   // console.dir(resultStr)
-//   // const timestamp = new Date();
+//   // const timestamp = new  Date();
 //   // const iso = timestamp.toISOString()
 
 //   // insertws(iso).catch(console.dir)
@@ -86,59 +88,112 @@ app.get("/data", (req,res) => {
 app.post("/post", async (req,res)=> 
 {
   const tijd = await req.body.tijd
-  const voor = await req.body.voor
-  const achter = await req.body.achter
-  const links = await req.body.left
-  const rechts = await req.body.right
+  const vooruit = await req.body.vooruit
+  const achteruit = await req.body.achteruit
+  const links = await req.body.links
+  const rechts = await req.body.rechts
   const stop = await req.body.stop
   const start = await req.body.start
+  const linksrijdend = await req.body.linksrijdend
+  const rechtsrijdend = await req.body.rechtsrijdend
   console.log(tijd)
-  console.log(voor)
-  console.log(achter)
+  console.log(vooruit)
+  console.log(achteruit)
   console.log(links)
   console.log(rechts)
-  console.log("niks")
   console.log(stop)
+  console.log(start)
+  console.log(linksrijdend)
+  console.log(rechtsrijdend)
+  res.send("200");
   if(stop != undefined){
     startstop = "start"
-    // return http.get('/test', {
-    //   params: {
-    //     richting: stop
-    //   }});
+    return http.post('/aaad1', {
+        commando: stop,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }else if(start != undefined){
     startstop = "stop"
-    // return http.get('/test', {
-    //   params: {
-    //     richting: start
-    //   }});
+    return http.post('/aaad1', {
+        commando: start,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }
-  else if(voor != undefined){
-    // return http.get('/test', {
-    //   params: {
-    //     richting: voor,
-    //     time: tijd
-    //   }});
+  else if(vooruit != undefined){
+    return http.post('/aaad1', {
+        commando: vooruit,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }
-  else if(achter != undefined){
-    // return http.get('/test', {
-    //   params: {
-    //     richting: achter,
-    //     time: tijd
-    //   }});
+  else if(achteruit != undefined){
+    return http.post('/aaad1 ', {
+        commando: achteruit,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }
   else if(links != undefined){
-    // return http.get('/test', {
-    //   params: {
-    //     richting: links,
-    //     time: tijd
-    //   }});
+    return http.post('/aaad1', {
+        commando: links,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }
   else if(rechts != undefined){
-    // return http.get('/test', {
-    //   params: {
-    //     richting: rechts,
-    //     time: tijd
-    //   }});
+    return http.post('/aaad1',{
+        commando: rechts,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+  }
+  else if(linksrijdend != undefined){
+    return http.post('/aaad1', {
+        commando: linksrijdend,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+  }
+  else if(rechtsrijdend != undefined){
+    return http.post('/aaad1', {
+        commando: rechtsrijdend,
+        tijd: tijd
+      })
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
   }
 
 })
