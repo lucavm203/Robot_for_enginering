@@ -89,7 +89,7 @@ figure {
     background-color: #60c2ef;
 }
 
-.cube { -webkit-transform-style: preserve-3d; width: 300px; height: 300px;}
+.cube { -webkit-transform-style: preserve-3d; width: 300px; height: 300px; transition-duration: 1s;}
 figure { -webkit-transform-origin: 50% 50% 0; }
 .front { -webkit-transform: translateZ(75px); background-color: rgba(0, 255, 255,0.5);}
 .back { -webkit-transform: rotateY(180deg) translateZ(75px);background-color: rgba(165, 42, 42,0.5); }

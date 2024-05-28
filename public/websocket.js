@@ -8,6 +8,18 @@ socket.addEventListener("message", (event) => {
     let xyz = document.querySelector("#datavanxyz");
     location.innerHTML = "Je locatie is nu op X " +datajson.xas_locatie+ " en Y "+ datajson.yas_locatie;
     xyz.innerHTML = "Je Helligns is nu op X " +datajson.xas_helling+ " en Y "+ datajson.yas_helling + " en Z "+ datajson.zas_helling;
-
+    if(datajson.xas_helling < -22){
+      alert("hoek van X is onder de -22 graden")
+    }else if(datajson.xas_helling > 22){
+      alert("hoek van X is boven de 22 graden")
+    }else if(datajson.yas_helling < -22){
+      alert("hoek van Y is onder de -22 graden")
+    }else if(datajson.yas_helling > 22){
+      alert("hoek van Y is boven de 22 graden")
+    }else if(datajson.zas_helling < -22){
+      alert("hoek van Z is onder de -22 graden")
+    }else if(datajson.zas_helling > 22){
+      alert("hoek van Z is boven de 22 graden")
+    }
     console.log(objects);
   });

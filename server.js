@@ -10,7 +10,7 @@ const path = require('path');
 const port = 8000;
 let server = require('http').createServer();
 var WebSocketServer = require('ws');
-// const ws = new WebSocketServer('ws://145.49.113.123:1880/ws/test');
+const ws = new WebSocketServer('ws://145.49.127.249:1880/ws/aaad1');
 const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+"@cluster0.aczs2un.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 var startstop = 'stop';
 
@@ -34,43 +34,86 @@ app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
 const client = new MongoDB.MongoClient(uri);
-// async function insertws(data) {
-//   try {
-//     const database = client.db('Test');
-//     const movies = database.collection('tester');
-//     // Query for a movie that has the title 'Back to the Future'
+async function insertHelling(x_helling,y_helling,z_helling,time) {
+  try {
+    const database = client.db('Aadlander');
+    const Helling = database.collection('TestHellingshoek');
+    // Query for a movie that has the title 'Back t o the Future'
   
-//     // const string = timest.toString()
-//     const doc = {
-//       time: data
-//     }
-//     const result = await movies.insertOne(doc);
-//     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    // const string = timest.toString()
+    const doc = {
+      X_helling: x_helling,
+      Y_helling: y_helling,
+      Z_helling: z_helling,
+      Timestamp: time
+    }
+    const result = await Helling.insertOne(doc);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//   }
-// }
+  } finally {
+    // Ensures that the client will close when you finish/error
+  }
+}
+async function insertLocatie(x_locatie,y_locatie,time) {
+  try {
+    const database = client.db('Aadlander');
+    const Locatie = database.collection('TestLocatie');
+    // Query for a movie that has the title 'Back to the Future'
+  
+    // const string = timest.toString()
+    const doc = {
+      Latitude: x_locatie,
+      Longitude: y_locatie,
+      Timestamp: time
+    }
+    const result = await Locatie.insertOne(doc);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-// ws.on('error', console.error);
+  } finally {
+    // Ensures that the client will close when you finish/error
+  }
+}
+async function insertCommando(commando,rijtijd,time) {
+  try {
+    const database = client.db('Aadlander');
+    const Commando = database.collection('TestCommandos');
+    // Query for a movie that has the title 'Back to the Future'
+  
+    // const string = timest.toString()
+    const doc = {
+      Commando: commando,
+      Rijtijd: rijtijd,
+      Timestamp: time
+    }
+    const result = await Commando.insertOne(doc);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-// ws.on('message', function message(data) {
-//   console.log('received: %s', data);
-//   console.dir(data)
-//   const jsonobj = JSON.parse(data)
-//   let x = jsonobj.XYZ.X
-//   let y = jsonobj.XYZ.Y
-//   let z = jsonobj.XYZ.Z
-//   console.log(x)
-//   console.log(y)
-//   console.log(z)
-//   // const resultStr = data.toString();
-//   // console.dir(resultStr)
-//   // const timestamp = new  Date();
-//   // const iso = timestamp.toISOString()
+  } finally {
+    // Ensures that the client will close when you finish/error
+  }
+}
 
-//   // insertws(iso).catch(console.dir)
-// });
+ws.on('error', console.error);
+
+ws.on('message', function message(data) {
+  console.log('received: %s', data);
+  console.dir(data)
+  const jsonobj = JSON.parse(data)
+  let x_helling = jsonobj.xas_helling;
+  let y_helling = jsonobj.yas_helling;
+  let z_helling = jsonobj.zas_helling;
+  let x_locatie = jsonobj.xas_locatie;
+  let y_locatie = jsonobj.yas_locatie;
+  let timestamp = jsonobj.timestamp;
+  console.log(x_helling);
+  console.log(y_helling);
+  console.log(z_helling);
+  console.log(x_locatie);
+  console.log(y_locatie);
+  insertHelling(x_helling,y_helling,z_helling,timestamp).catch(console.dir);
+  insertLocatie(x_locatie,y_locatie,timestamp).catch(console.dir);
+
+});
 
 
 
@@ -96,6 +139,8 @@ app.post("/post", async (req,res)=>
   const start = await req.body.start
   const linksrijdend = await req.body.linksrijdend
   const rechtsrijdend = await req.body.rechtsrijdend
+  let Timestamp = new Date();
+  console.log(Timestamp);
   console.log(tijd)
   console.log(vooruit)
   console.log(achteruit)
@@ -113,6 +158,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(stop,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -124,6 +170,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(start,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -135,6 +182,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(vooruit,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -146,6 +194,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(achteruit,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -157,6 +206,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(links,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -168,6 +218,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(rechts,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -179,6 +230,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(linksrijdend,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -190,6 +242,7 @@ app.post("/post", async (req,res)=>
         tijd: tijd
       })
       .then((response) => {
+        insertCommando(rechtsrijdend,tijd,Timestamp).catch(console.dir);
         console.log(response);
       }, (error) => {
         console.log(error);
