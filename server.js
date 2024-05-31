@@ -13,7 +13,6 @@ var WebSocketServer = require('ws');
 const ws = new WebSocketServer('ws://145.49.127.249:1880/ws/aaad1');
 const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+"@cluster0.aczs2un.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 var startstop = 'stop';
-
 const http = axios.create({
   baseURL: 'http://145.49.127.249:1880/aaadlander',
   headers: {
@@ -114,7 +113,6 @@ ws.on('message', function message(data) {
   insertLocatie(x_locatie,y_locatie,timestamp).catch(console.dir);
 
 });
-
 
 
 

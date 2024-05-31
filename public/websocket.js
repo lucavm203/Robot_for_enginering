@@ -1,4 +1,4 @@
-const socket = new WebSocket("ws://145.49.127.249:1880/ws/aaad1")
+const socket = new WebSocket("ws://localhost:8080")
 socket.addEventListener("message", (event) => {
     console.log("Message from server ", event.data);
     let datajson = JSON.parse(event.data);

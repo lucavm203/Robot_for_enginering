@@ -1,0 +1,429 @@
+[
+    {
+        "id": "84c6cdcbf4d5b489",
+        "type": "tab",
+        "label": "aaadlander/aaad1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a308c5185891510f",
+        "type": "RF24output",
+        "z": "84c6cdcbf4d5b489",
+        "name": "",
+        "radio": "efb2e29959b89172",
+        "topic": "AAAD1",
+        "pipeaddress": "0x4141414431",
+        "autoack": true,
+        "hidestats": false,
+        "writemode": 1,
+        "streamsize": "512",
+        "x": 690,
+        "y": 280,
+        "wires": [
+            [
+                "332e8a5d66b2fdd4"
+            ]
+        ]
+    },
+    {
+        "id": "332e8a5d66b2fdd4",
+        "type": "debug",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Tx to pipe AAAD1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2a4cb3c37cdf0bb7",
+        "type": "debug",
+        "z": "84c6cdcbf4d5b489",
+        "name": "REST api Query",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d6a5e586afd0219a",
+        "type": "http response",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Command Post Reply",
+        "statusCode": "",
+        "headers": {},
+        "x": 380,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "dadbab19c17c6abb",
+        "type": "http in",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Command REST api",
+        "url": "/aaadlander/aaad1",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "2a4cb3c37cdf0bb7",
+                "d6a5e586afd0219a",
+                "3bc1fa50217eaa67"
+            ]
+        ]
+    },
+    {
+        "id": "689a0f0988e04634",
+        "type": "comment",
+        "z": "84c6cdcbf4d5b489",
+        "name": "http://145.49.127.249:1880/aaadlander/aaad1?led=",
+        "info": "# Voorbeeld queries\nhttp://145.49..127.249:1880/aaadlander/aaad1?led=on\nhttp://145.49..127.249:1880/aaadlander/aaad1?led=off",
+        "x": 230,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "67faf773ed369d75",
+        "type": "comment",
+        "z": "84c6cdcbf4d5b489",
+        "name": "ws://145.49.127.249:1880/ws/aaad1",
+        "info": "# Voorbeeld queries\nhttp://145.49..127.249:1880/aaadlander/aaad1?led=on\nhttp://145.49..127.249:1880/aaadlander/aaad1?led=off\n",
+        "x": 820,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "2385dd0d0d15dfca",
+        "type": "RF24input",
+        "z": "84c6cdcbf4d5b489",
+        "name": "",
+        "topic": "AAAD1",
+        "radio": "efb2e29959b89172",
+        "outputstring": false,
+        "hidestats": false,
+        "pipeaddress": "0x4141414431",
+        "autoack": true,
+        "mergeframes": "1",
+        "mergetimeout": "1000",
+        "x": 90,
+        "y": 580,
+        "wires": [
+            [
+                "647a656c3c811c6e",
+                "3f538058839a8601"
+            ]
+        ]
+    },
+    {
+        "id": "3f538058839a8601",
+        "type": "buffer-parser",
+        "z": "84c6cdcbf4d5b489",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "uint8",
+                "name": "xas_helling",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint8",
+                "name": "yas_helling",
+                "offset": 1,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint8",
+                "name": "zas_helling",
+                "offset": 2,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "xas_locatie",
+                "offset": 3,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "yas_locatie",
+                "offset": 5,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "return",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 310,
+        "y": 580,
+        "wires": [
+            [
+                "de3edb18e199c0f5"
+            ]
+        ]
+    },
+    {
+        "id": "647a656c3c811c6e",
+        "type": "debug",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Raw Rx payload from pipe AAAD1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "1b486fd001bc3948",
+        "type": "websocket out",
+        "z": "84c6cdcbf4d5b489",
+        "name": "",
+        "server": "905291fae412804d",
+        "client": "",
+        "x": 940,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7ebfb848d3a1f402",
+        "type": "debug",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Rx payload from pipe AAAD1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "f1f180c9743c00e2",
+        "type": "function",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Add Time",
+        "func": "msg.payload.timestamp = new Date();\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 580,
+        "wires": [
+            [
+                "1b486fd001bc3948",
+                "7ebfb848d3a1f402"
+            ]
+        ]
+    },
+    {
+        "id": "7cc2768d9af7f1ef",
+        "type": "comment",
+        "z": "84c6cdcbf4d5b489",
+        "name": "ARO3 - groep 9 - Luca en Ronnie",
+        "info": "# ARO3",
+        "x": 170,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "15c46d5f89d2280c",
+        "type": "inject",
+        "z": "84c6cdcbf4d5b489",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"value\":100}",
+        "payloadType": "json",
+        "x": 490,
+        "y": 460,
+        "wires": [
+            [
+                "f1f180c9743c00e2"
+            ]
+        ]
+    },
+    {
+        "id": "de3edb18e199c0f5",
+        "type": "function",
+        "z": "84c6cdcbf4d5b489",
+        "name": "shift helling met -90 graden",
+        "func": "msg.payload.xas_helling -= 90\nmsg.payload.yas_helling -= 90\nmsg.payload.zas_helling -= 90\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 580,
+        "wires": [
+            [
+                "f1f180c9743c00e2"
+            ]
+        ]
+    },
+    {
+        "id": "aa28ad34e9fd8431",
+        "type": "debug",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Tx Buffer",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3bc1fa50217eaa67",
+        "type": "function",
+        "z": "84c6cdcbf4d5b489",
+        "name": "construct nRF24 msg",
+        "func": "var commando = msg.payload.commando\nvar tijd = msg.payload.tijd\nvar buf = Buffer.alloc(32);\n\nbuf.writeUInt16BE(Number(tijd),0);\n\nif (commando =='vooruit') {\n    buf.writeUInt8(0x77,2); // w\n}\nif (commando == 'achteruit') {\n    buf.writeUInt8(0x73,2); // s\n}\nif (commando == 'links') {\n    buf.writeUInt8(0x61, 2); // a\n}\nif (commando == 'rechts') {\n    buf.writeUInt8(0x64,2); // d\n}\nif (commando == 'linksrijdend') {\n    buf.writeUInt8(0x71,2); // q\n}\nif (commando == 'rechtsrijdend') {\n    buf.writeUInt8(0x65,2); // e\n}\nif (commando == 'stop') {\n    buf.writeUInt8(0x6B,2); // k\n}\nif (commando == 'start') {\n    buf.writeUInt8(0x69,2); // i\n}\n\nmsg.payload = buf;\n\nreturn msg",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 280,
+        "wires": [
+            [
+                "a308c5185891510f",
+                "aa28ad34e9fd8431"
+            ]
+        ]
+    },
+    {
+        "id": "8b4b5b7f2a65a499",
+        "type": "inject",
+        "z": "84c6cdcbf4d5b489",
+        "name": "Inject vooruit, 100",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[0,100,119]",
+        "payloadType": "bin",
+        "x": 370,
+        "y": 360,
+        "wires": [
+            [
+                "a308c5185891510f",
+                "aa28ad34e9fd8431"
+            ]
+        ]
+    },
+    {
+        "id": "efb2e29959b89172",
+        "type": "RF24radio",
+        "name": "nRF24radio_aaadlander",
+        "ce": "22",
+        "cs": "0",
+        "irq": "-1",
+        "spispeed": "10000000",
+        "autorecover": true,
+        "palevel": "3",
+        "enablelna": true,
+        "datarate": "0",
+        "channel": "76",
+        "crclength": "2",
+        "retriesdelay": "15",
+        "retriescount": "15",
+        "payloadsize": "32",
+        "basepoll": "10000",
+        "txdelay": "250"
+    },
+    {
+        "id": "905291fae412804d",
+        "type": "websocket-listener",
+        "path": "/ws/aaad1",
+        "wholemsg": "false"
+    }
+]
