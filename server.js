@@ -10,11 +10,10 @@ const path = require('path');
 const port = 8000;
 let server = require('http').createServer();
 var WebSocketServer = require('ws');
-const ws = new WebSocketServer('ws://145.49.127.249:1880/ws/aaad1');
-const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+"@cluster0.aczs2un.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-var startstop = 'stop';
+const ws = new WebSocketServer(process.env.USER_WEBSOCKET);
+const uri = "mongodb+srv://"+process.env.USER_NAME+":"+process.env.USER_PASSWORD+process.env.USER_SERVER;
 const http = axios.create({
-  baseURL: 'http://145.49.127.249:1880/aaadlander',
+  baseURL: process.env.USER_REST_API,
   headers: {
     'Content-Type' : 'application/x-www-form-urlencoded'
   }
@@ -27,23 +26,32 @@ app.use(
   express.json()
 )
 
+let con;
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(express.static(path.join(__dirname, "public")));
 
-const client = new MongoDB.MongoClient(uri);
+
+async function connect() {
+  if (con) return con; // return connection if already conncted
+  const client = new  MongoDB.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  con = client.connect()
+  return con;
+}
+
 async function insertHelling(x_helling,y_helling,z_helling,time) {
   try {
-    const database = client.db('Aadlander');
-    const Helling = database.collection('TestHellingshoek');
+    const client = await connect();
+    const database = client.db(process.env.USER_DATABASE);
+    const Helling = database.collection(process.env.USER_COLLECTION_1);
     // Query for a movie that has the title 'Back t o the Future'
   
-    // const string = timest.toString()
+    // const string = timest.toFixed(2)
     const doc = {
-      X_helling: x_helling,
-      Y_helling: y_helling,
-      Z_helling: z_helling,
+      X_helling: x_helling.toFixed(2),
+      Y_helling: y_helling.toFixed(2),
+      Z_helling: z_helling.toFixed(2),
       Timestamp: time
     }
     const result = await Helling.insertOne(doc);
@@ -55,14 +63,15 @@ async function insertHelling(x_helling,y_helling,z_helling,time) {
 }
 async function insertLocatie(x_locatie,y_locatie,time) {
   try {
-    const database = client.db('Aadlander');
-    const Locatie = database.collection('TestLocatie');
+    const client = await connect();
+    const database = client.db(process.env.USER_DATABASE);
+    const Locatie = database.collection(process.env.USER_COLLECTION_2);
     // Query for a movie that has the title 'Back to the Future'
   
-    // const string = timest.toString()
+    // const string = timest.toFixed(2)
     const doc = {
-      Latitude: x_locatie,
-      Longitude: y_locatie,
+      Latitude: x_locatie.toFixed(2),
+      Longitude: y_locatie.toFixed(2),
       Timestamp: time
     }
     const result = await Locatie.insertOne(doc);
@@ -74,11 +83,12 @@ async function insertLocatie(x_locatie,y_locatie,time) {
 }
 async function insertCommando(commando,rijtijd,time) {
   try {
-    const database = client.db('Aadlander');
-    const Commando = database.collection('TestCommandos');
+    const client = await connect();
+    const database = client.db(process.env.USER_DATABASE);
+    const Commando = database.collection(process.env.USER_COLLECTION_3);
     // Query for a movie that has the title 'Back to the Future'
   
-    // const string = timest.toString()
+    // const string = timest.toFixed(2)
     const doc = {
       Commando: commando,
       Rijtijd: rijtijd,
@@ -118,10 +128,10 @@ ws.on('message', function message(data) {
 
 
 app.get("/", (req, res) => {
-    res.render("index", { title: "controll", startstop: startstop});
+    res.render("index", { title: "controll", websocket: process.env.USER_WEBSOCKET});
   });
 app.get("/data", (req,res) => {
-  res.render("data",{title: "data"})
+  res.render("data",{title: "data", websocket: process.env.USER_WEBSOCKET})
 });
 
 
@@ -150,8 +160,7 @@ app.post("/post", async (req,res)=>
   console.log(rechtsrijdend)
   res.send("200");
   if(stop != undefined){
-    startstop = "start"
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: stop,
         tijd: tijd
       })
@@ -162,8 +171,7 @@ app.post("/post", async (req,res)=>
         console.log(error);
       });
   }else if(start != undefined){
-    startstop = "stop"
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: start,
         tijd: tijd
       })
@@ -175,7 +183,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(vooruit != undefined){
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: vooruit,
         tijd: tijd
       })
@@ -187,7 +195,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(achteruit != undefined){
-    return http.post('/aaad1 ', {
+    return http.post(process.env.USER_API_END, {
         commando: achteruit,
         tijd: tijd
       })
@@ -199,7 +207,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(links != undefined){
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: links,
         tijd: tijd
       })
@@ -211,7 +219,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(rechts != undefined){
-    return http.post('/aaad1',{
+    return http.post(process.env.USER_API_END,{
         commando: rechts,
         tijd: tijd
       })
@@ -223,7 +231,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(linksrijdend != undefined){
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: linksrijdend,
         tijd: tijd
       })
@@ -235,7 +243,7 @@ app.post("/post", async (req,res)=>
       });
   }
   else if(rechtsrijdend != undefined){
-    return http.post('/aaad1', {
+    return http.post(process.env.USER_API_END, {
         commando: rechtsrijdend,
         tijd: tijd
       })
@@ -257,7 +265,7 @@ app.listen(port, () => {
 
 function cleanup() {
   // do clean up here
-  client.close
+  con.close()
   console.log("good bye. till next time")
 }
 

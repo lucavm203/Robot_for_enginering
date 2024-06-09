@@ -27,13 +27,89 @@ block layout-content
                     figure.bottom onderkant
                     figure.left rechterkant
                     figure.righter linkerkant
-                    figure.front voorkant                  
+                    figure.front voorkant    
+        .row
+            div(class="col m4")
+                .popup: span(class="popuptext" id="myPopupX")
+            div(class="col m4")
+                .popup: span(class="popuptext" id="myPopupY")
+            div(class="col m4") 
+                .popup: span(class="popuptext" id="myPopupZ")
         
 
 
 
 
+    script.
+        const socket = new WebSocket('!{websocket}')
+        var popupX = "nee";
+        var popupY = "nee";
+        var popupZ = "nee";
+        socket.addEventListener("message", (event) => {
+            console.log("Message from server ", event.data);
+            let datajson = JSON.parse(event.data);
+            let objects = document.querySelector(".cube");
+            objects.style.transform = "rotateX("+datajson.xas_helling+"deg)" +"rotateY("+datajson.yas_helling+"deg)" + "rotateZ("+datajson.zas_helling+"deg)";
+            let location = document.querySelector("#datavanlocate");
+            let xyz = document.querySelector("#datavanxyz");
+            location.innerHTML = "Je locatie is nu op X " +datajson.xas_locatie+ " en Y "+ datajson.yas_locatie;
+            xyz.innerHTML = "Je Hellingshoek in graden is nu op X_as " +datajson.xas_helling+ " en Y_as "+ datajson.yas_helling + " en Z_as "+ datajson.zas_helling;
+            var PopupX = document.getElementById("myPopupX");
+            var PopupY = document.getElementById("myPopupY");
+            var PopupZ = document.getElementById("myPopupZ");
+
+            if(popupX == "ja" ){
+                PopupX.classList.toggle("show")
+                popupX = "nee"
+            }
+            if(popupY == "ja" ){
+                PopupY.classList.toggle("show")
+                popupY = "nee"
+
+            }
+            if(popupZ == "ja" ){
+                PopupZ.classList.toggle("show")
+                popupZ = "nee"
+
+            }
 
 
 
-    script(rel="javascript"  src="websocket.js") 
+            if(datajson.xas_helling < -22){
+                PopupX.innerHTML = "Hellingshoek van X is onder de -22 graden"
+                PopupX.classList.toggle("show")
+                popupX = "ja";
+                console.log("X laag")
+            }else if(datajson.xas_helling > 22){
+                PopupX.innerHTML = "Hellingshoek van X is boven de 22 graden"
+                PopupX.classList.toggle("show")
+                popupX = "ja";
+                console.log("X hoog")
+            }
+            if(datajson.yas_helling < -22){
+                PopupY.innerHTML = "Hellingshoek van Y is onder de -22 graden"
+                PopupY.classList.toggle("show")
+                popupY = "ja";
+                console.log("Y laag")
+            }else if(datajson.yas_helling > 22){
+                PopupY.innerHTML = "Hellingshoek van Y is boven de 22 graden"
+                PopupY.classList.toggle("show")
+                popupY = "ja";
+                console.log("Y hoog")
+            }
+            if(datajson.zas_helling < -22){
+                PopupZ.innerHTML = "Hellingshoek van Z is onder de -22 graden"
+                PopupZ.classList.toggle("show")
+                popupZ = "ja";
+                console.log("Z laag")
+            }else if(datajson.zas_helling > 22){
+                PopupZ.innerHTML = "Hellingshoek van Z is boven de 22 graden"
+                PopupZ.classList.toggle("show")
+                popupZ = "ja";
+                console.log("Z hoog")
+            }
+
+            console.log(objects);
+        });
+
+

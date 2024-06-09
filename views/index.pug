@@ -16,9 +16,9 @@ block layout-content
                 div(class="col s4 left-align")
 
             .row 
-                div(class="col s4 right-align"): button(class="waves-effect waves-light btn"  type="submit", name="start" value="start" id="start") start
+                div(class="col s4 right-align")
                 div(class="col s4 center-align")
-                div(class="col s4 left-align"): button(class="waves-effect waves-light btn" type="submit", name="stop" value="stop" id="stop" ) stop
+                div(class="col s4 left-align")
 
             .row 
                 div(class="col s3")
@@ -30,7 +30,7 @@ block layout-content
             .row 
                 div(class="col s3")
                 div(class="col s2 right-align"): button(class="waves-effect waves-light btn btn2" type="submit", name="links" value="links") links
-                div(class="col s2 center-align") 
+                div(class="col s2 center-align"): button(class="waves-effect waves-light btn btn2" type="submit", name="stop" value="stop" id="stop" ) stop 
                 div(class="col s2 left-align"): button(class="waves-effect waves-light btn btn2" type="submit", name="rechts" value="rechts") rechts
                 div(class="col s3")
 
@@ -40,17 +40,75 @@ block layout-content
                 div(class="col s2 center-align"): button(class="waves-effect waves-light btn btn2" type="submit", name="achteruit" value="achteruit") achteruit
                 div(class="col s2 left-align")
                 div(class="col s3")
+            .row 
+                div(class="col s4 right-align")
+                div(class="col s4 center-align")
+                div(class="col s4 left-align")
+            .row 
+                div(class="col s4 right-align")
+                div(class="col s4 center-align")
+                div(class="col s4 left-align")   
+            .row 
+                div(class="col s4")
+                    .popup: span(class="popuptext" id="myPopupX")
+
+                div(class="col s4")
+                    .popup: span(class="popuptext" id="myPopupY")
+
+                div(class="col s4")
+                    .popup: span(class="popuptext" id="myPopupZ")
+
 
     script.
-        let stopss = document.querySelector("#stop");
-        let startss = document.querySelector("#start");
-        let startstop = '!{startstop}';
-        if ( startstop == "stop"){
-            startss.classList.add("disabled");
-        }
-        if (startstop == "start"){
-            stopss.classList.add("disabled");
-        }
-        
+        const socket = new WebSocket('!{websocket}')
+        var popupX = "nee";
+        var popupY = "nee";
+        var popupZ = "nee";
+        socket.addEventListener("message", (event) => {
+            console.log("Message from server ", event.data);
+            let datajson = JSON.parse(event.data);
+            var PopupX = document.getElementById("myPopupX");
+            var PopupY = document.getElementById("myPopupY");
+            var PopupZ = document.getElementById("myPopupZ");
+            if(popupX == "ja" ){
+                PopupX.classList.toggle("show")
+                popupX = "nee"
+            }
+            if(popupY == "ja" ){
+                PopupY.classList.toggle("show")
+                popupY = "nee"
+            }
+            if(popupZ == "ja" ){
+                PopupZ.classList.toggle("show")
+                popupZ = "nee"
+            }
+            if(datajson.xas_helling < -22){
+                PopupX.innerHTML = "Hellingshoek van X is onder de -22 graden"
+                PopupX.classList.toggle("show")
+                popupX = "ja";
+            }else if(datajson.xas_helling > 22){
+                PopupX.innerHTML = "Hellingshoek van X is boven de 22 graden"
+                PopupX.classList.toggle("show")
+                popupX = "ja";
+            }
+            if(datajson.yas_helling < -22){
+                PopupY.innerHTML = "Hellingshoek van Y is onder de -22 graden"
+                PopupY.classList.toggle("show")
+                popupY = "ja";
+            }else if(datajson.yas_helling > 22){
+                PopupY.innerHTML = "Hellingshoek van Y is boven de 22 graden"
+                PopupY.classList.toggle("show")
+                popupY = "ja";
+            }
+            if(datajson.zas_helling < -22){
+                PopupZ.innerHTML = "Hellingshoek van Z is onder de -22 graden"
+                PopupZ.classList.toggle("show")
+                popupZ = "ja";
+            }else if(datajson.zas_helling > 22){
+                PopupZ.innerHTML = "Hellingshoek van Z is boven de 22 graden"
+                PopupZ.classList.toggle("show")
+                popupZ = "ja";
+            }
+        });
    
     script(rel="javascript" src="scripts.js")
